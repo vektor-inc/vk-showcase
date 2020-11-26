@@ -1,0 +1,23 @@
+{
+  "name": "vk-showcase",
+  "version": "1.0.0",
+  "description": "Showcase Plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vektor-inc/vk-showcase.git"
+  },
+  "author": "Vektor, Inc.",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/vektor-inc/vk-showcase/issues"
+  },
+  "homepage": "https://github.com/vektor-inc/vk-showcase#readme",
+  "devDependencies": {
+    "@wordpress/env": "^2.1.0",
+    "npm-check-updates": "^10.2.2"
+  }
+}
