@@ -47,8 +47,8 @@ class VK_Showcase {
 		);
 
 		register_taxonomy(
-			'site_type',
 			'in_charge',
+			'showcase',
 			array(
 				'label'             => __( 'In Charge', 'vk-showcase' ),
 				'public'            => true,
@@ -58,8 +58,8 @@ class VK_Showcase {
 		);
 
 		register_taxonomy(
-			'site_type',
 			'industry',
+			'showcase',
 			array(
 				'label'             => __( 'Industry', 'vk-showcase' ),
 				'public'            => true,
