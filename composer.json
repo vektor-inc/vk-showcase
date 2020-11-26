@@ -1,0 +1,17 @@
+{
+    "name": "vektor-inc/vk-showcase",
+    "description": "Showcase Plugin",
+    "license": "GPL-2.0-or-lator",
+    "authors": [
+        {
+            "name": "vektor-inc",
+            "email": "info@vektor-inc.co.jp"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "sirbrillig/phpcs-variable-analysis": "^2.9",
+        "wp-phpunit/wp-phpunit": "^5.5",
+        "phpcompatibility/phpcompatibility-wp": "^2.1"
+    }
+}
