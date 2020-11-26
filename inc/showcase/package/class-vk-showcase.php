@@ -19,6 +19,22 @@ class VK_Showcase {
 	}
 
 	/**
+	 * Add Role
+	 */
+	public static function add_role() {
+		global $wp_roles;
+		$wp_roles->add_role(
+			'creator',
+			__( 'Creator', 'vk-showcase' ),
+			array(
+				'read'         => true,
+				'edit_posts'   => true,
+				'delete_posts' => true,
+			)
+		);
+	}
+
+	/**
 	 * Add Showcase Post Type
 	 */
 	public static function register_post_type() {
@@ -32,7 +48,7 @@ class VK_Showcase {
 				'has_archive'  => true,
 				'menu_icon'    => 'dashicons-screenoptions',
 				'show_in_rest' => true,
-				'supports'     => array( 'title', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'editor' ),
+				'supports'      => array( 'title', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'editor' ),
 			)
 		);
 
@@ -71,8 +87,6 @@ class VK_Showcase {
 				'show_in_rest' => true,
 			)
 		);
-
 	}
 }
 new VK_Showcase();
-
