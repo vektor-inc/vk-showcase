@@ -35,3 +35,5 @@ class VK_Showcase_Users {
 		);
 	}
 }
+
+new VK_Showcase_Users();

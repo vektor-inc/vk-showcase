@@ -135,4 +135,5 @@ class VK_Showcase_Post_Types {
 		$wp_roles->add_cap( 'contributor', 'delete_showcases' );
 	}
 }
+
 new VK_Showcase_Post_Types();
