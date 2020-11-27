@@ -65,12 +65,14 @@ class VK_Showcase_Users {
 	 * Update Allow Contact on Profile
 	 */
 	public static function update_allow_contact( $user_id, $old_user_data ) {
-		if ( isset( $_POST['allow_contact'] ) ) {
-			$allow_contact = true;
-		} else {
-			$allow_contact = false;
+		if ( current_user_can( 'creator' ) && defined( 'IS_PROFILE_PAGE' ) && IS_PROFILE_PAGE ) {
+			if ( isset( $_POST['allow_contact'] ) ) {
+				$allow_contact = true;
+			} else {
+				$allow_contact = false;
+			}
+			update_user_meta( $user_id, 'allow_contact', $allow_contact );
 		}
-		update_user_meta( $user_id, 'allow_contact', $allow_contact );
 	}
 }
 
