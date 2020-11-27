@@ -2,12 +2,13 @@
 /**
  * Plugin Name: VK Showcase
  * Plugin URI: https://github.com/vektor-inc/vk-showcase
- * Description: This plugin for filter search.
+ * Description: This plugin for showcase.
  * Version: 0.0.1
  * Author:  Vektor,Inc.
  * Author URI: https://vektor-inc.co.jp
  * Text Domain: vk-showcase
  * License: GPL 2.0 or Later
+ * Domain Path: /languages
  *
  * @package VK Showcase
  */

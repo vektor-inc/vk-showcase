@@ -50,9 +50,9 @@ class VK_Showcase_Users {
 		if ( current_user_can( 'creator' ) && defined( 'IS_PROFILE_PAGE' ) && IS_PROFILE_PAGE ) {
 			?>
 			<tr>
-				<th scope="row"><?php _e( 'Allow contact from customor', 'vk-showcase' ); ?></th>
+				<th scope="row"><?php _e( 'Accept production inquiries', 'vk-showcase' ); ?></th>
 				<td>
-					<label><input type="checkbox" name="allow_contact" <?php checked( $user_meta, true, true ) ?>><?php _e( 'Allow contact from customor', 'vk-showcase' ); ?></label>
+					<label><input type="checkbox" name="allow_contact" <?php checked( $user_meta, true, true ) ?>><?php _e( 'Accept production inquiries', 'vk-showcase' ); ?></label>
 				</td>
 			</tr>
 			<?php
