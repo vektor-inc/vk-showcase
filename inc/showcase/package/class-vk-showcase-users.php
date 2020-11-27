@@ -14,6 +14,8 @@ class VK_Showcase_Users {
 	 */
 	public function __construct() {
 		add_action( 'init', array( __CLASS__, 'add_role' ) );
+		// add_filter( 'woocommerce_prevent_admin_access', '__return_false' );
+		// add_filter( 'woocommerce_disable_admin_bar', '__return_false' );
 	}
 
 	/**
