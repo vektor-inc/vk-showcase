@@ -1,41 +1,21 @@
 <?php
 /**
- * VK Showcase Main
+ * VK Showcase Post Types
  *
  * @package VK Showcase
  */
 
 /**
- * VK Showcase
+ * VK Showcase Post Types
  */
-class VK_Showcase {
+class VK_Showcase_Post_Types {
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		add_action( 'init', array( __CLASS__, 'add_role' ) );
 		add_action( 'init', array( __CLASS__, 'register_post_type' ) );
 		add_action( 'admin_init', array( __CLASS__, 'role_setting' ) );
-	}
-
-	/**
-	 * Add Role
-	 */
-	public static function add_role() {
-		global $wp_roles;
-		$wp_roles->add_role(
-			'creator',
-			__( 'Creator', 'vk-showcase' ),
-			array(
-				'read'             => true,
-				'read_showcase'    => true,
-				'edit_showcase'    => true,
-				'delete_showcase'  => true,
-				'edit_showcases'   => true,
-				'delete_showcases' => true,
-			)
-		);
 	}
 
 	/**
@@ -155,4 +135,4 @@ class VK_Showcase {
 		$wp_roles->add_cap( 'contributor', 'delete_showcases' );
 	}
 }
-new VK_Showcase();
+new VK_Showcase_Post_Types();
