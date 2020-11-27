@@ -4,7 +4,7 @@
   "description": "Showcase Plugin",
   "main": "index.js",
   "scripts": {
-	"composer:install:win": "wp-env run composer \"composer install\"",
+    "composer:install:win": "wp-env run composer \"composer install\"",
     "composer:install:mac": "wp-env run composer 'composer install'",
     "phpunit:win": "wp-env run phpunit \"phpunit -c /var/www/html/wp-content/plugins/vk-showcase/phpunit.xml.dist --verbose\"",
     "phpunit:mac": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/vk-showcase/phpunit.xml.dist --verbose'"
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/vektor-inc/vk-showcase#readme",
   "devDependencies": {
     "@wordpress/env": "^2.1.0",
+    "gulp": "^4.0.2",
     "npm-check-updates": "^10.2.2"
   }
 }
