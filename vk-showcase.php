@@ -15,14 +15,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'VKSC_PATH', plugin_dir_path( __FILE__ ) );
+define( 'VKSC_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 
 $data = get_file_data( __FILE__, array( 'version' => 'Version' ) );
 define( 'VKSC_VERSION', $data['version'] );
 
 global $vkfs_prefix;
-$vkfs_prefix = apply_filters( 'vkfs_prefix', 'VK ' );
+$vkfs_prefix = apply_filters( 'vkfs_prefix', '' );
 
-load_plugin_textdomain( 'vk-showcase', false, VKSC_PATH . '/languages/' );
-
-require_once VKSC_PATH . 'inc/showcase/showcase-config.php';
+load_plugin_textdomain( 'vk-showcase', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+require_once VKSC_PATH . '/inc/showcase/showcase-config.php';
