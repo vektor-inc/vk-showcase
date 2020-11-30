@@ -16,7 +16,6 @@ class VK_Showcase_Post_Types {
 	public function __construct() {
 		add_action( 'init', array( __CLASS__, 'register_post_type' ) );
 		add_action( 'admin_init', array( __CLASS__, 'role_setting' ) );
-		add_action( 'pre_get_posts', array( __CLASS__, 'change_author_archive' ) );
 	}
 
 	/**
@@ -134,12 +133,6 @@ class VK_Showcase_Post_Types {
 		$wp_roles->add_cap( 'contributor', 'delete_showcase' );
 		$wp_roles->add_cap( 'contributor', 'edit_showcases' );
 		$wp_roles->add_cap( 'contributor', 'delete_showcases' );
-	}
-
-	public static function change_author_archive( $query ) {
-		if ( is_author() && $query->is_main_query() ) {
-			$query->set( 'post_type', array( 'post', 'showcase' ) );
-		}
 	}
 }
 
