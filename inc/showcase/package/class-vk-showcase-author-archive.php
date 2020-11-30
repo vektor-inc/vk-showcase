@@ -22,7 +22,7 @@ class VK_Showcase_Author_Archive {
 		if ( array_key_exists( $current_parent_theme, $theme_hook_array ) ) {
 			add_action( $theme_hook_array[ $current_parent_theme ], array( __CLASS__, 'display_author_info_on_loop' ) );
 		} else {
-			add_action( 'loop_start', array( __CLASS__, 'display_pad_on_loop' ) );
+			add_action( 'loop_start', array( __CLASS__, 'display_author_info_on_loop' ) );
 		}
 	}
 
@@ -47,7 +47,7 @@ class VK_Showcase_Author_Archive {
 	/**
 	 * Display Author Info on Loop
 	 */
-	public static function display_pad_on_loop() {
+	public static function display_author_info_on_loop() {
 		if ( class_exists( 'Vk_Post_Author_Box' ) ) {
 			echo Vk_Post_Author_Box::pad_get_author_profile();
 		}
