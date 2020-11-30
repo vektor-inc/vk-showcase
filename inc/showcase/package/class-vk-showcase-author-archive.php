@@ -48,7 +48,7 @@ class VK_Showcase_Author_Archive {
 	 * Display Author Info on Loop
 	 */
 	public static function display_author_info_on_loop() {
-		if ( class_exists( 'Vk_Post_Author_Box' ) ) {
+		if ( class_exists( 'Vk_Post_Author_Box' ) && is_author() ) {
 			echo Vk_Post_Author_Box::pad_get_author_box( 'author_archive' );
 		}
 	}
