@@ -33,7 +33,7 @@ class VK_Showcase_Contact_Form {
 
 		if ( 'showcase' === get_post_type() ) {
 			if ( '1' === $allow_contact ) {
-				$contact_button .= '<a class="btn btn-primary text-center" href="' . $form_url . '?creator-name=' . $user_name . '&creator-email=' . $user_email . '">';
+				$contact_button .= '<a class="btn btn-primary text-center btn-block btn-lg" href="' . $form_url . '?creator-name=' . $user_name . '&creator-email=' . $user_email . '">';
 				$contact_button .= __( 'この製作者に制作依頼をする', 'vk-showcase' );
 				$contact_button .= '</a>';
 			} else {
