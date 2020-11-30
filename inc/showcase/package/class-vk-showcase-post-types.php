@@ -27,7 +27,7 @@ class VK_Showcase_Post_Types {
 		register_post_type(
 			'showcase',
 			array(
-				'label'        => $vkfs_prefix . __( 'Showcase', 'vk-showcase' ),
+				'label'        => __( '制作実績', 'vk-showcase' ),
 				'public'       => true,
 				'has_archive'  => true,
 				'menu_icon'    => 'dashicons-screenoptions',
@@ -57,7 +57,7 @@ class VK_Showcase_Post_Types {
 			'site_type',
 			'showcase',
 			array(
-				'label'             => __( 'Site Type', 'vk-showcase' ),
+				'label'             => __( 'サイト種別・機能', 'vk-showcase' ),
 				'public'            => true,
 				'show_admin_column' => true,
 				'hierarchical'      => true,
@@ -75,7 +75,7 @@ class VK_Showcase_Post_Types {
 			'in_charge',
 			'showcase',
 			array(
-				'label'             => __( 'In Charge', 'vk-showcase' ),
+				'label'             => __( '担当範囲', 'vk-showcase' ),
 				'public'            => true,
 				'show_admin_column' => true,
 				'hierarchical'      => true,
@@ -93,7 +93,7 @@ class VK_Showcase_Post_Types {
 			'industry',
 			'showcase',
 			array(
-				'label'             => __( 'Industry', 'vk-showcase' ),
+				'label'             => __( '業種', 'vk-showcase' ),
 				'public'            => true,
 				'show_admin_column' => true,
 				'hierarchical'      => true,

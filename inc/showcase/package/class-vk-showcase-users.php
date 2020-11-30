@@ -28,7 +28,7 @@ class VK_Showcase_Users {
 		global $wp_roles;
 		$wp_roles->add_role(
 			'creator',
-			__( 'Creator', 'vk-showcase' ),
+			__( '制作者', 'vk-showcase' ),
 			array(
 				'read'             => true,
 				'read_showcase'    => true,
@@ -50,9 +50,9 @@ class VK_Showcase_Users {
 		if ( current_user_can( 'creator' ) && defined( 'IS_PROFILE_PAGE' ) && IS_PROFILE_PAGE ) {
 			?>
 			<tr>
-				<th scope="row"><?php _e( 'Accept production inquiries', 'vk-showcase' ); ?></th>
+				<th scope="row"><?php _e( '制作問い合わせを受け付ける', 'vk-showcase' ); ?></th>
 				<td>
-					<label><input type="checkbox" name="allow_contact" <?php checked( $user_meta, true, true ) ?>><?php _e( 'Accept production inquiries', 'vk-showcase' ); ?></label>
+					<label><input type="checkbox" name="allow_contact" <?php checked( $user_meta, true, true ) ?>><?php _e( '制作問い合わせを受け付ける', 'vk-showcase' ); ?></label>
 				</td>
 			</tr>
 			<?php
