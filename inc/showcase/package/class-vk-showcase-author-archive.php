@@ -49,7 +49,7 @@ class VK_Showcase_Author_Archive {
 	 */
 	public static function display_author_info_on_loop() {
 		if ( class_exists( 'Vk_Post_Author_Box' ) ) {
-			echo Vk_Post_Author_Box::pad_get_author_profile();
+			echo Vk_Post_Author_Box::pad_get_author_box( 'author_archive' );
 		}
 	}
 }
