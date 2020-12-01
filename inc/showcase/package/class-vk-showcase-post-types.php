@@ -14,7 +14,7 @@ class VK_Showcase_Post_Types {
 	 * Constructor
 	 */
 	public function __construct() {
-		add_action( 'init', array( __CLASS__, 'register_post_type' ) );
+		add_action( 'init', array( __CLASS__, 'register_post_type' ), 0 );
 		add_action( 'admin_init', array( __CLASS__, 'role_setting' ) );
 	}
 
