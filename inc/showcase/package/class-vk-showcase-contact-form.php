@@ -19,13 +19,20 @@ class VK_Showcase_Contact_Form {
 	}
 
 	/**
+	 * Contact Form URL
+	 */
+	public static function contact_form_url() {
+		return apply_filters( 'vksc_form_url', 'https://showcase.vektor-inc.co.jp/production-request/' );
+	}
+
+	/**
 	 * Add Contact Button
 	 */
 	public static function add_contact_button( $content ) {
 		global $post;
-		global $form_url;
 		$contact_button = '';
 
+		$form_url      = self::contact_form_url();
 		$user_id       = get_userdata( $post->post_author )->ID;
 		$user_email    = get_the_author_meta( 'user_email', $user_id );
 		$user_name     = get_the_author_meta( 'nickname', $user_id );
