@@ -72,6 +72,24 @@ class VK_Showcase_Post_Types {
 		);
 
 		register_taxonomy(
+			'theme',
+			'showcase',
+			array(
+				'label'             => __( 'テーマ・スキン', 'vk-showcase' ),
+				'public'            => true,
+				'show_admin_column' => true,
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'capabilities'      => array(
+					'manage_terms' => 'manage_categories',
+					'edit_terms'   => 'manage_categories',
+					'delete_terms' => 'manage_categories',
+					'assign_terms' => 'edit_showcases',
+				),
+			)
+		);
+
+		register_taxonomy(
 			'in_charge',
 			'showcase',
 			array(
