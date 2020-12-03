@@ -54,10 +54,10 @@ class VK_Showcase_Post_Types {
 		);
 
 		register_taxonomy(
-			'site_type',
+			'theme',
 			'showcase',
 			array(
-				'label'             => __( 'サイト種別・機能', 'vk-showcase' ),
+				'label'             => __( 'テーマ・スキン', 'vk-showcase' ),
 				'public'            => true,
 				'show_admin_column' => true,
 				'hierarchical'      => true,
@@ -72,10 +72,10 @@ class VK_Showcase_Post_Types {
 		);
 
 		register_taxonomy(
-			'theme',
+			'site_type',
 			'showcase',
 			array(
-				'label'             => __( 'テーマ・スキン', 'vk-showcase' ),
+				'label'             => __( 'サイト種別・機能', 'vk-showcase' ),
 				'public'            => true,
 				'show_admin_column' => true,
 				'hierarchical'      => true,
