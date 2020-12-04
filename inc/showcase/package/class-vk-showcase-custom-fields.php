@@ -16,7 +16,7 @@ class VK_Showcase_Custom_Fields {
 	public function __construct() {
 		add_action( 'admin_menu', array( __CLASS__, 'add_meta_box' ) );
 		add_action( 'save_post', array( __CLASS__, 'save_fields' ) );
-		add_filter( 'the_content', array( __CLASS__, 'display_fields'), 10 );
+		add_filter( 'the_content', array( __CLASS__, 'display_fields'), 9 );
 	}
 
 	/**
@@ -66,8 +66,8 @@ class VK_Showcase_Custom_Fields {
 		$site_url    = ! empty( get_post_meta( $post->ID, 'showcase_site_url', true ) ) ? get_post_meta( $post->ID, 'showcase_site_url', true ) : '';
 
 		if ( ! empty( $site_url ) ) {
-			$site_button  = '<a class="btn btn-danger text-center btn-block btn-lg" href="' . $site_url . '">';
-			$site_button .= __( 'このサイトを見に行く', 'vk-showcase' );
+			$site_button  = '<a class="btn btn-danger text-center btn-block btn-lg" href="' . $site_url . '" target="_blank">';
+			$site_button .= '<i class="fas fa-arrow-circle-right"></i>' . __( 'このサイトを見る', 'vk-showcase' ) . '<i class="fas fa-external-link-alt"></i>';
 			$site_button .= '</a>';
 		}
 
