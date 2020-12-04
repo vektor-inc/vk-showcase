@@ -54,7 +54,7 @@ class VK_Showcase_Post_Types {
 		);
 
 		register_taxonomy(
-			'theme',
+			'themes_and_skins',
 			'showcase',
 			array(
 				'label'             => __( 'テーマ・スキン', 'vk-showcase' ),
