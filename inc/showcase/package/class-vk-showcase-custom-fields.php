@@ -25,11 +25,11 @@ class VK_Showcase_Custom_Fields {
 	public static function add_meta_box() {
 		add_meta_box(
 			'vk_showcase_site_infomation',
-			__( 'サイトの情報', 'vk-showcase' ),
+			__( '制作したサイトの情報', 'vk-showcase' ),
 			array( __CLASS__,  'add_fields' ),
 			'showcase',
 			'normal',
-			'default',
+			'default'
 		);
 	}
 
