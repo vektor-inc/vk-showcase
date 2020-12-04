@@ -14,7 +14,7 @@ class VK_Showcase_Contact_Form {
 	 * Constructor
 	 */
 	public function __construct() {
-		add_filter( 'the_content', array( __CLASS__, 'add_contact_button' ) );
+		add_filter( 'the_content', array( __CLASS__, 'add_contact_button' ), 11 );
 		add_filter( 'wpcf7_form_tag', array( __CLASS__, 'set_form' ), 11 );
 	}
 
