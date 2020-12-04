@@ -66,9 +66,9 @@ class VK_Showcase_Custom_Fields {
 		$site_url    = ! empty( get_post_meta( $post->ID, 'showcase_site_url', true ) ) ? get_post_meta( $post->ID, 'showcase_site_url', true ) : '';
 
 		if ( ! empty( $site_url ) ) {
-			$site_button  = '<a class="btn btn-danger text-center btn-block btn-lg" href="' . $site_url . '" target="_blank">';
-			$site_button .= '<i class="fas fa-arrow-circle-right"></i>' . __( 'このサイトを見る', 'vk-showcase' ) . '<i class="fas fa-external-link-alt"></i>';
-			$site_button .= '</a>';
+			$site_button  = '<div style="margin-top:2rem;margin-bottom:2rem;"><a class="btn btn-danger text-center btn-block btn-lg" href="' . $site_url . '" target="_blank">';
+			$site_button .= '<i class="fas fa-arrow-circle-right"></i> ' . __( 'このサイトを見る', 'vk-showcase' ) . ' <i class="fas fa-external-link-alt"></i>';
+			$site_button .= '</a></div>';
 		}
 
 		return $content . $site_button;
