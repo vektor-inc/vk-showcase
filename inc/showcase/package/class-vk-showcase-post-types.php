@@ -23,7 +23,6 @@ class VK_Showcase_Post_Types {
 	 */
 	public static function register_post_type() {
 
-		global $vkfs_prefix;
 		register_post_type(
 			'information',
 			array(
