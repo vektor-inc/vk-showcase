@@ -21,12 +21,12 @@ class VK_Showcase_Users {
 		// add_filter( 'woocommerce_disable_admin_bar', '__return_false' );
 	}
 
-	/**
+		/**
 	 * Add Role
 	 */
 	public static function add_role() {
 		global $wp_roles;
-		$wp_roles->add_role(
+		$wp_roles->remove_role(
 			'creator',
 			__( '制作者', 'vk-showcase' ),
 			array(
@@ -47,7 +47,7 @@ class VK_Showcase_Users {
 		global $profileuser;
 		$user_meta = get_user_meta( $profileuser->ID, 'allow_contact', true );
 
-		if ( current_user_can( 'creator' ) && defined( 'IS_PROFILE_PAGE' ) && IS_PROFILE_PAGE ) {
+		if ( current_user_can( 'contributor' ) && defined( 'IS_PROFILE_PAGE' ) && IS_PROFILE_PAGE ) {
 			?>
 			<tr>
 				<th scope="row"><?php _e( '制作問い合わせを受け付ける', 'vk-showcase' ); ?></th>
@@ -65,7 +65,7 @@ class VK_Showcase_Users {
 	 * Update Allow Contact on Profile
 	 */
 	public static function update_allow_contact( $user_id, $old_user_data ) {
-		if ( current_user_can( 'creator' ) && defined( 'IS_PROFILE_PAGE' ) && IS_PROFILE_PAGE ) {
+		if ( current_user_can( 'contributor' ) && defined( 'IS_PROFILE_PAGE' ) && IS_PROFILE_PAGE ) {
 			if ( isset( $_POST['allow_contact'] ) ) {
 				$allow_contact = true;
 			} else {

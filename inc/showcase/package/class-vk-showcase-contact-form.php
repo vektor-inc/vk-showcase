@@ -38,9 +38,9 @@ class VK_Showcase_Contact_Form {
 		$user_name     = get_the_author_meta( 'nickname', $user_id );
 		$allow_contact = get_the_author_meta( 'allow_contact', $user_id );
 
-		if ( 'showcase' === get_post_type() ) {
+		if ( 'post' === get_post_type() ) {
 			if ( '1' === $allow_contact ) {
-				$contact_button .= '<a class="btn btn-primary text-center btn-block btn-lg" href="' . $form_url . '?creator-name=' . $user_name . '&creator-email=' . $user_email . '"><i class="fas fa-arrow-circle-right"></i> ';
+				$contact_button .= '<a class="btn btn-primary text-center btn-block btn-lg" href="' . $form_url . '?contributor-name=' . $user_name . '&contributor-email=' . $user_email . '"><i class="fas fa-arrow-circle-right"></i> ';
 				$contact_button .= __( 'この制作者に依頼の問い合わせ', 'vk-showcase' );
 				$contact_button .= '</a>';
 			} else {
@@ -58,17 +58,17 @@ class VK_Showcase_Contact_Form {
 			return $tag;
 		}
 		// ユーザー（顧客）のメールアドレス.
-		if( isset( $_GET['creator-name'] ) ) {
+		if( isset( $_GET['contributor-name'] ) ) {
 			$name = $tag['name'];
-			if( $name == 'creator-name' ) {
-				$tag['values'] = (array) $_GET['creator-name'];
+			if( $name == 'contributor-name' ) {
+				$tag['values'] = (array) $_GET['contributor-name'];
 			}
 		}
 		// ユーザー（顧客）のメールアドレス.
-		if( isset( $_GET['creator-email'] ) ) {
+		if( isset( $_GET['contributor-email'] ) ) {
 			$name = $tag['name'];
-			if( $name == 'creator-email' ) {
-				$tag['values'] = (array) $_GET['creator-email'];
+			if( $name == 'contributor-email' ) {
+				$tag['values'] = (array) $_GET['contributor-email'];
 			}
 		}
 		return $tag;

@@ -45,7 +45,7 @@ class VK_Showcase_Author_Archive {
 	 */
 	public static function change_author_archive( $query ) {
 		if ( is_author() && $query->is_main_query() ) {
-			$query->set( 'post_type', array( 'post', 'showcase' ) );
+			$query->set( 'post_type', array( 'post' ) );
 		}
 	}
 
@@ -70,7 +70,7 @@ class VK_Showcase_Author_Archive {
 
 		$default_options['display_image_overlay_term'] = false;
 
-		if ( 'showcase' === get_post_type() && '1' === $allow_contact ) {
+		if ( 'post' === get_post_type() && '1' === $allow_contact ) {
 			$default_options['overlay'] = '<span class="' . $outer_class . '" style="' . $outer_style. '">' . __( '依頼受付中', 'vk-showcase' ) . '</span>';
 		} else {
 			$default_options['overlay'] ='';
