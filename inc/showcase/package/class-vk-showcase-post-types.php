@@ -106,8 +106,8 @@ class VK_Showcase_Post_Types {
 		$meta_caps = array(
 			'wpcf7_edit_contact_form'    => 'edit_pages',
 			'wpcf7_edit_contact_forms'   => 'edit_pages',
-			'wpcf7_read_contact_form'    => 'read_pages',
-			'wpcf7_read_contact_forms'   => 'read_pages',
+			'wpcf7_read_contact_form'    => 'edit_pages',
+			'wpcf7_read_contact_forms'   => 'edit_pages',
 			'wpcf7_delete_contact_form'  => 'delete_pages',
 			'wpcf7_delete_contact_forms' => 'delete_pages',
 			'wpcf7_manage_integration'   => 'manage_options',
