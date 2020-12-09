@@ -15,6 +15,7 @@ class VK_Showcase_Post_Types {
 	 */
 	public function __construct() {
 		add_action( 'init', array( __CLASS__, 'register_post_type' ), 0 );
+		add_filter( 'wpcf7_map_meta_cap', array( __CLASS__, 'wpcf7_capabilities' ) );
 	}
 
 	/**
@@ -99,6 +100,21 @@ class VK_Showcase_Post_Types {
 
 		unregister_taxonomy_for_object_type( 'category', 'post' );
 		unregister_taxonomy_for_object_type( 'post_tag', 'post' );
+	}
+
+	public static function wpcf7_capabilities( $meta_caps ) {
+		$meta_caps = array(
+			'wpcf7_edit_contact_form'    => 'edit_page',
+			'wpcf7_edit_contact_forms'   => 'edit_pages',
+			'wpcf7_read_contact_form'    => 'read_page',
+			'wpcf7_read_contact_forms'   => 'read_pages',
+			'wpcf7_delete_contact_form'  => 'delete_page',
+			'wpcf7_delete_contact_forms' => 'delete_pages',
+			'wpcf7_manage_integration'   => 'manage_options',
+			'wpcf7_submit'               => 'read',
+		);
+
+		return $meta_caps;
 	}
 
 }
