@@ -34,7 +34,6 @@ class VK_Showcase_Post_Types {
 				'supports'     => array( 'title', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'editor' ),
 				'map_meta_cap' => true,
 				'capabilities' => array(
-					'create_posts'           => 'create_pages',
 					'edit_posts'             => 'edit_pages',
 					'edit_others_posts'      => 'edit_others_pages',
 					'publish_posts'          => 'publish_pages',
