@@ -33,7 +33,7 @@ class VK_Showcase_Users {
 				'edit_posts'   => true,
 				'delete_posts' => true,
 				'upload_files' => true,
-			),
+			)
 		);
 	}
 
