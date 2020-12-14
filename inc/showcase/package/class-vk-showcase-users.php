@@ -15,6 +15,7 @@ class VK_Showcase_Users {
 	 */
 	public function __construct() {
 		add_action( 'init', array( __CLASS__, 'add_creator_role' ), 10, 2 );
+		add_action( 'admin_init', array( __CLASS__, 'remove_menu_link' ), 10, 2 );
 		add_action( 'show_password_fields', array( __CLASS__, 'add_allow_contact' ) );
 		add_action( 'profile_update', array( __CLASS__, 'update_allow_contact' ), 10, 2 );
 		// add_filter( 'woocommerce_prevent_admin_access', '__return_false' );
@@ -35,6 +36,16 @@ class VK_Showcase_Users {
 				'upload_files' => true,
 			)
 		);
+	}
+
+	/**
+	 * Remove Menu Link
+	 */
+	public static function remove_menu_link() {
+		if ( current_user_can( 'creator' ) ) {
+			remove_menu_page( 'edit-comments.php' );
+			remove_menu_page( 'tools.php' );
+		}
 	}
 
 	/**
