@@ -26,12 +26,17 @@ class VK_Showcase_Users {
 	 * Add Creator Role
 	 */
 	public static function add_creator_role() {
+
+		// 権限を変更する時は一旦削除
+		// remove_role( 'creator' );
+
 		add_role(
 			'creator',
-			__( '製作者', 'vk-showcase' ),
+			__( '制作者', 'vk-showcase' ),
 			array(
 				'read'         => true,
 				'edit_posts'   => true,
+				'edit_published_posts'   => true,
 				'delete_posts' => true,
 				'upload_files' => true,
 			)
@@ -61,6 +66,13 @@ class VK_Showcase_Users {
 				<th scope="row"><?php _e( '制作問い合わせを受け付ける', 'vk-showcase' ); ?></th>
 				<td>
 					<label><input type="checkbox" name="allow_contact" <?php checked( $user_meta, true, true ) ?>><?php _e( '制作問い合わせを受け付ける', 'vk-showcase' ); ?></label>
+<?php
+// role確認
+// if ( current_user_can( 'administrator' ) ){
+// 	$role = get_role( 'creator' );
+// 	print '<pre style="text-align:left">';print_r($role);print '</pre>';
+// }
+?>
 				</td>
 			</tr>
 			<?php
