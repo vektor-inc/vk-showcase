@@ -22,3 +22,4 @@ define( 'VKSC_VERSION', $data['version'] );
 
 load_plugin_textdomain( 'vk-showcase', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 require_once VKSC_PATH . '/inc/showcase/showcase-config.php';
+require_once VKSC_PATH . '/inc/mail-notice.php';
