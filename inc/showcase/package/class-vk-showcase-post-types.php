@@ -16,7 +16,41 @@ class VK_Showcase_Post_Types {
 	public function __construct() {
 		add_action( 'init', array( __CLASS__, 'register_post_type' ), 0 );
 		add_filter( 'wpcf7_map_meta_cap', array( __CLASS__, 'wpcf7_capabilities' ) );
+		add_filter( 'post_type_labels_post', array( __CLASS__, 'custom_post_labels' ) );
 	}
+
+
+	/**
+	 * 投稿のラベルを変更します。
+	 */
+	public static function custom_post_labels( $labels ) {
+		$labels->name = '制作実績'; // 投稿
+		$labels->singular_name = '制作実績'; // 投稿
+		$labels->add_new = '新規追加'; // 新規追加
+		$labels->add_new_item = '制作実績を追加'; // 新規投稿を追加
+		$labels->edit_item = '投稿の編集'; // 投稿の編集
+		$labels->new_item = '新規制作実績'; // 新規投稿
+		$labels->view_item = '制作実績を表示'; // 投稿を表示
+		$labels->search_items = '制作実績を検索'; // 投稿を検索
+		$labels->not_found = '制作実績が見つかりませんでした。'; // 投稿が見つかりませんでした。
+		$labels->not_found_in_trash = 'ゴミ箱内に制作実績が見つかりませんでした。'; // ゴミ箱内に投稿が見つかりませんでした。
+		$labels->parent_item_colon = ''; // (なし)
+		$labels->all_items = '制作実績一覧'; // 投稿一覧
+		$labels->archives = '制作実績アーカイブ'; // 投稿アーカイブ
+		$labels->insert_into_item = '制作実績に挿入'; // 投稿に挿入
+		$labels->uploaded_to_this_item = 'この制作実績へのアップロード'; // この投稿へのアップロード
+		$labels->featured_image = 'アイキャッチ画像'; // アイキャッチ画像
+		$labels->set_featured_image = 'アイキャッチ画像を設定'; // アイキャッチ画像を設定
+		$labels->remove_featured_image = 'アイキャッチ画像を削除'; // アイキャッチ画像を削除
+		$labels->use_featured_image = 'アイキャッチ画像として使用'; // アイキャッチ画像として使用
+		$labels->filter_items_list = '制作実績リストの絞り込み'; // 投稿リストの絞り込み
+		$labels->items_list_navigation = '制作実績リストナビゲーション'; // 投稿リストナビゲーション
+		$labels->items_list = '制作実績リスト'; // 投稿リスト
+		$labels->menu_name = '制作実績'; // 投稿
+		$labels->name_admin_bar = '制作実績'; // 投稿
+		return $labels;
+	}
+
 
 	/**
 	 * Add Showcase Post Type
