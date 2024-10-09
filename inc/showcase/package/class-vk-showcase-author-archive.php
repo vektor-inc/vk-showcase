@@ -45,7 +45,7 @@ class VK_Showcase_Author_Archive {
 	 */
 	public static function change_author_archive( $query ) {
 		if ( is_author() && $query->is_main_query() ) {
-			$query->set( 'post_type', array( 'post' ) );
+			$query->set( 'post_type', 'post' );
 		}
 	}
 
@@ -53,7 +53,8 @@ class VK_Showcase_Author_Archive {
 	 * Display Author Info on Loop
 	 */
 	public static function display_author_info_on_loop() {
-		if ( class_exists( 'Vk_Post_Author_Box' ) && is_author() ) {
+		global $post;
+		if ( class_exists( 'Vk_Post_Author_Box' ) && is_author() && $post  ) {
 			echo Vk_Post_Author_Box::pad_get_author_box( 'author_archive' );
 		}
 	}
