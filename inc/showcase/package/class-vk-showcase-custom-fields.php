@@ -29,7 +29,8 @@ class VK_Showcase_Custom_Fields {
 			array( __CLASS__,  'add_fields' ),
 			'post',
 			'normal',
-			'default'
+			'default',
+			array( '__back_compat_meta_box' => true )
 		);
 	}
 
