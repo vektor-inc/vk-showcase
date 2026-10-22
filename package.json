@@ -23,5 +23,8 @@
     "@wordpress/env": "^4.0.0",
     "gulp": "^4.0.2",
     "npm-check-updates": "^11.3.0"
+  },
+  "volta": {
+    "node": "24.22.1"
   }
 }
