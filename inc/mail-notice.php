@@ -52,7 +52,9 @@ function vk_sc_mail_for_withdraw( $user, $deleted_post_count ) {
 	$message .= "退会手続きが完了しました。ご利用ありがとうございました。\r\n";
 	$message .= "アカウントと、掲載していた制作実績・画像はすべて削除しました。\r\n";
 	$message .= "\r\n";
-	$message .= "このメールに心当たりがない場合は、お手数ですがサイトの運営者までご連絡ください。\r\n";
+	$message .= "このメールに心当たりがない場合は、こちらまでご連絡ください。ただし削除したデータの復元はできません。\r\n";
+	$message .= "{$blogname}\r\n";
+	$message .= home_url( '/' ) . "\r\n";
 	$message .= "\r\n";
 	$message .= "{$date_time}\r\n";
 	wp_mail( $user->user_email, $subject, $message );

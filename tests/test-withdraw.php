@@ -120,6 +120,47 @@ class WithdrawTest extends WP_UnitTestCase {
 		$user_id = $this->create_user( 'creator' );
 		get_userdata( $user_id )->add_cap( 'delete_users' );
 		$this->assertFalse( VK_Showcase_Withdraw::can_withdraw( $user_id ), 'delete_users 権限を持つ制作者は退会できない' );
+
+		// サイト設定権限を足した制作者は退会できない。
+		$user_id = $this->create_user( 'creator' );
+		get_userdata( $user_id )->add_cap( 'manage_options' );
+		$this->assertFalse( VK_Showcase_Withdraw::can_withdraw( $user_id ), 'manage_options 権限を持つ制作者は退会できない' );
+	}
+
+	/**
+	 * パスワードを連続して間違えたら受け付けなくなるテスト
+	 */
+	public function test_validate_request_password_lock() {
+		$user_id = $this->create_user( 'creator' );
+		wp_set_current_user( $user_id );
+		$nonce = wp_create_nonce( VK_Showcase_Withdraw::NONCE_ACTION );
+
+		// 上限回数まで間違える。
+		for ( $i = 0; $i < VK_Showcase_Withdraw::MAX_PASSWORD_FAILURES; $i++ ) {
+			$this->assertSame( 'wrong_password', VK_Showcase_Withdraw::validate_request( $user_id, $nonce, true, 'wrong' ), ( $i + 1 ) . ' 回目の失敗は wrong_password' );
+		}
+		$this->assertSame( 'too_many_attempts', VK_Showcase_Withdraw::validate_request( $user_id, $nonce, true, self::PASSWORD ), '上限後は正しいパスワードでも受け付けない' );
+
+		// 失敗回数を消せば、また受け付ける。
+		delete_transient( VK_Showcase_Withdraw::get_failure_transient_key( $user_id ) );
+		$this->assertSame( '', VK_Showcase_Withdraw::validate_request( $user_id, $nonce, true, self::PASSWORD ), '失敗回数が消えれば正しいパスワードで通る' );
+	}
+
+	/**
+	 * 送信値が配列のときは空として扱うテスト
+	 */
+	public function test_process_request_array_values() {
+		$user_id = $this->create_user( 'creator' );
+		$request = $this->build_request( $user_id, 'valid', true, self::PASSWORD );
+
+		$array_password                           = $request;
+		$array_password['vksc_withdraw_password'] = array( self::PASSWORD );
+		$this->assertSame( 'wrong_password', VK_Showcase_Withdraw::process_request( $user_id, $array_password ), 'パスワードが配列なら wrong_password' );
+
+		$array_nonce             = $request;
+		$array_nonce['_wpnonce'] = array( $request['_wpnonce'] );
+		$this->assertSame( 'invalid_nonce', VK_Showcase_Withdraw::process_request( $user_id, $array_nonce ), 'nonce が配列なら invalid_nonce' );
+		$this->assertNotFalse( get_userdata( $user_id ), '退会されていない' );
 	}
 
 	/**
@@ -267,6 +308,45 @@ class WithdrawTest extends WP_UnitTestCase {
 			$this->assertNotNull( get_post( $post_id ), '他人の投稿は残る' );
 		}
 		$this->assertNotNull( get_post( $others['attachment'] ), '他人の添付は残る' );
+	}
+
+	/**
+	 * ユーザー ID が 0・存在しない値のときは何も削除しないテスト
+	 */
+	public function test_delete_user_contents_invalid_user() {
+		$other_id = $this->create_user( 'creator' );
+		$others   = $this->create_contents( $other_id );
+
+		foreach ( array( 0, '0', 99999999 ) as $invalid_user_id ) {
+			$this->assertSame( 0, VK_Showcase_Withdraw::delete_user_contents( $invalid_user_id ), 'ID ' . $invalid_user_id . ' は何も削除しない' );
+		}
+		foreach ( $others['posts'] as $post_id ) {
+			$this->assertNotNull( get_post( $post_id ), '他人の投稿が残る' );
+		}
+		$this->assertNotNull( get_post( $others['attachment'] ), '他人の添付が残る' );
+		$this->assertFalse( VK_Showcase_Withdraw::withdraw( 99999999 ), '存在しないユーザーの退会は false' );
+	}
+
+	/**
+	 * 他人がアップロードして本人の投稿に添付した画像は残るテスト
+	 */
+	public function test_delete_user_contents_keeps_others_attachment() {
+		$creator_id  = $this->create_user( 'creator' );
+		$uploader_id = $this->create_user( 'administrator' );
+		$post_id     = self::factory()->post->create( array( 'post_author' => $creator_id ) );
+		$attachment  = self::factory()->attachment->create_object(
+			array(
+				'file'           => 'vksc-others.jpg',
+				'post_mime_type' => 'image/jpeg',
+				'post_author'    => $uploader_id,
+				'post_parent'    => $post_id,
+			)
+		);
+
+		VK_Showcase_Withdraw::delete_user_contents( $creator_id );
+
+		$this->assertNull( get_post( $post_id ), '本人の投稿は削除される' );
+		$this->assertNotNull( get_post( $attachment ), '他人がアップロードした添付は残る' );
 	}
 
 	/**
