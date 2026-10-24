@@ -435,34 +435,51 @@ class WithdrawTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * 退会手続きページでだけ「プロフィール」を強調表示するテスト
+	 * 退会手続きページでだけ options.php の親をプロフィールへ読み替えるテスト
 	 */
-	public function test_highlight_profile_menu() {
+	public function test_map_parent_to_profile_menu() {
+		global $_wp_real_parent_file;
+		$original = $_wp_real_parent_file;
+
 		$test_cases = array(
 			array(
-				'test_condition_name' => '退会手続きページ => profile.php',
+				'test_condition_name' => '退会手続きページ（制作者の左メニュー）=> profile.php',
 				'page'                => VK_Showcase_Withdraw::PAGE_SLUG,
+				'real_parent_file'    => array(),
 				'expected'            => 'profile.php',
 			),
 			array(
-				'test_condition_name' => '別のページ => 受け取った値のまま',
-				'page'                => 'other-page',
-				'expected'            => 'options.php',
+				'test_condition_name' => '退会手続きページ（ユーザー一覧の権限を持つ者）=> profile.php の読み替え先 users.php',
+				'page'                => VK_Showcase_Withdraw::PAGE_SLUG,
+				'real_parent_file'    => array( 'profile.php' => 'users.php' ),
+				'expected'            => 'users.php',
 			),
 			array(
-				'test_condition_name' => 'page 指定なし => 受け取った値のまま',
+				'test_condition_name' => '別のページ => 読み替えない',
+				'page'                => 'other-page',
+				'real_parent_file'    => array(),
+				'expected'            => null,
+			),
+			array(
+				'test_condition_name' => 'page 指定なし => 読み替えない',
 				'page'                => null,
-				'expected'            => 'options.php',
+				'real_parent_file'    => array(),
+				'expected'            => null,
 			),
 		);
 
 		foreach ( $test_cases as $case ) {
+			$_wp_real_parent_file = $case['real_parent_file'];
 			unset( $_GET['page'] );
 			if ( null !== $case['page'] ) {
 				$_GET['page'] = $case['page'];
 			}
-			$this->assertSame( $case['expected'], VK_Showcase_Withdraw::highlight_profile_menu( 'options.php' ), $case['test_condition_name'] );
+			VK_Showcase_Withdraw::map_parent_to_profile_menu();
+			$actual = isset( $_wp_real_parent_file['options.php'] ) ? $_wp_real_parent_file['options.php'] : null;
+			$this->assertSame( $case['expected'], $actual, $case['test_condition_name'] );
 		}
+
 		unset( $_GET['page'] );
+		$_wp_real_parent_file = $original;
 	}
 }

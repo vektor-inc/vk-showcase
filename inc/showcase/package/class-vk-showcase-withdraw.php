@@ -37,9 +37,8 @@ class VK_Showcase_Withdraw {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( __CLASS__, 'add_withdraw_page' ) );
+		add_action( 'admin_head', array( __CLASS__, 'map_parent_to_profile_menu' ) );
 		add_action( 'show_user_profile', array( __CLASS__, 'render_profile_entry' ) );
-		add_filter( 'parent_file', array( __CLASS__, 'highlight_profile_menu' ) );
-		add_filter( 'submenu_file', array( __CLASS__, 'highlight_profile_menu' ) );
 		add_action( 'admin_post_vksc_withdraw', array( __CLASS__, 'handle_withdraw_request' ) );
 		add_filter( 'login_message', array( __CLASS__, 'add_login_message' ) );
 	}
@@ -74,17 +73,25 @@ class VK_Showcase_Withdraw {
 	}
 
 	/**
-	 * 退会手続きページを開いている間、左メニューの「プロフィール」を強調表示する
+	 * 退会手続きページを開いている間、左メニューの「プロフィール」を強調表示させる
 	 *
-	 * @param string|null $file 既定の強調対象（parent_file / submenu_file フィルターの値）.
-	 * @return string|null 退会手続きページなら 'profile.php'、それ以外は受け取った値のまま.
+	 * parent_file フィルターでは強調できない。メニュー描画の直後に get_admin_page_parent() が
+	 * $parent_file を上書きし、options.php 配下のページは親が options.php に戻されるため。
+	 * 同関数が参照する $_wp_real_parent_file で、options.php をプロフィールの項目へ読み替える。
+	 * ページの表示可否の判定（admin.php）が options.php のまま行われるよう、
+	 * 読み替えは admin_head（判定の後・メニュー描画の前）に、退会手続きページでだけ行う。
 	 */
-	public static function highlight_profile_menu( $file ) {
+	public static function map_parent_to_profile_menu() {
+		global $_wp_real_parent_file;
 		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( self::PAGE_SLUG === $page ) {
-			return 'profile.php';
+		if ( self::PAGE_SLUG !== $page ) {
+			return;
 		}
-		return $file;
+		if ( ! is_array( $_wp_real_parent_file ) ) {
+			$_wp_real_parent_file = array();
+		}
+		// 制作者は profile.php、ユーザー一覧の権限を持つ者は users.php がプロフィールの親になる。
+		$_wp_real_parent_file['options.php'] = isset( $_wp_real_parent_file['profile.php'] ) ? $_wp_real_parent_file['profile.php'] : 'profile.php';
 	}
 
 	/**
