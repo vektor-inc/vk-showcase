@@ -143,7 +143,7 @@ class VK_Showcase_Withdraw {
 			<?php if ( $error ) : ?>
 				<div id="vksc-withdraw-notice" class="notice notice-error" role="alert" tabindex="-1">
 					<p>
-						<?php echo esc_html( implode( '', $error['messages'] ) ); ?>
+						<?php echo esc_html( implode( ' ', $error['messages'] ) ); ?>
 						<?php if ( '' !== $error['target'] ) : ?>
 							<a href="#<?php echo esc_attr( $error['target'] ); ?>"><?php esc_html_e( '入力欄へ移動', 'vk-showcase' ); ?></a>
 						<?php endif; ?>
@@ -210,14 +210,16 @@ class VK_Showcase_Withdraw {
 				}
 				// 送信後はボタンを無効化して二重送信を防ぐ（送信処理は止めない）。
 				var form = document.getElementById( 'vksc-withdraw-form' );
-				if ( form ) {
+				var button = form ? form.querySelector( '.vksc-withdraw-submit' ) : null;
+				if ( form && button ) {
 					form.addEventListener( 'submit', function () {
-						var button = form.querySelector( '.vksc-withdraw-submit' );
-						if ( button ) {
-							window.setTimeout( function () {
-								button.disabled = true;
-							}, 0 );
-						}
+						window.setTimeout( function () {
+							button.disabled = true;
+						}, 0 );
+					} );
+					// ブラウザの「戻る」で復帰したときに無効のままにならないよう戻す。
+					window.addEventListener( 'pageshow', function () {
+						button.disabled = false;
 					} );
 				}
 			} )();
@@ -251,7 +253,7 @@ class VK_Showcase_Withdraw {
 			'too_many_attempts'  => array(
 				'messages' => array(
 					__( 'パスワードの入力に続けて失敗したため、しばらく退会手続きを受け付けられません。', 'vk-showcase' ),
-					__( '時間をおいてから、もう一度お試しください。', 'vk-showcase' ),
+					__( '15分ほど時間をおいてから、もう一度お試しください。', 'vk-showcase' ),
 				),
 				'target'   => '',
 			),
@@ -329,8 +331,8 @@ class VK_Showcase_Withdraw {
 	 */
 	public static function delete_user_contents( $user_id ) {
 		// author が 0 だと WP_Query が条件を無視して全員分になるため、実在するユーザーだけを対象にする。
-		$user_id = absint( $user_id );
-		if ( 0 === $user_id || ! get_userdata( $user_id ) ) {
+		$user_id = (int) $user_id;
+		if ( $user_id <= 0 || ! get_userdata( $user_id ) ) {
 			return 0;
 		}
 
@@ -375,7 +377,7 @@ class VK_Showcase_Withdraw {
 	 * 退会処理を実行する（投稿・添付ファイル削除 → ユーザー削除 → vksc_after_withdraw）
 	 *
 	 * @param int $user_id 対象ユーザー ID.
-	 * @return int|false 削除した投稿の件数。削除前の事前確認またはユーザー削除に失敗したら false.
+	 * @return int|false 削除した投稿の件数。対象ユーザーが存在しない、またはユーザー削除に失敗したら false.
 	 */
 	public static function withdraw( $user_id ) {
 		require_once ABSPATH . 'wp-admin/includes/user.php';
@@ -383,8 +385,8 @@ class VK_Showcase_Withdraw {
 		// 削除後は参照できないため、通知用にユーザー情報を控える。
 		$user = get_userdata( $user_id );
 
-		// 投稿を消した後でユーザー削除だけ失敗する状態を避けるため、先に確認できることは確認する。
-		if ( ! $user || ! function_exists( 'wp_delete_user' ) ) {
+		// 対象ユーザーが存在しなければ、何も削除せずに終える。
+		if ( ! $user ) {
 			return false;
 		}
 
@@ -457,7 +459,7 @@ class VK_Showcase_Withdraw {
 	 */
 	public static function add_login_message( $message ) {
 		if ( isset( $_GET['vksc_withdrawn'] ) && '1' === $_GET['vksc_withdrawn'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$message .= '<p class="message" role="status">' . esc_html__( '退会手続きが完了しました。', 'vk-showcase' ) . esc_html__( 'ご利用ありがとうございました。', 'vk-showcase' ) . '</p>';
+			$message .= '<p class="message" role="status">' . esc_html__( '退会手続きが完了しました。', 'vk-showcase' ) . ' ' . esc_html__( 'ご利用ありがとうございました。', 'vk-showcase' ) . '</p>';
 		}
 		return $message;
 	}

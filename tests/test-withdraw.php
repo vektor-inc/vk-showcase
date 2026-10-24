@@ -311,19 +311,25 @@ class WithdrawTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * ユーザー ID が 0・存在しない値のときは何も削除しないテスト
+	 * ユーザー ID が 0・負の数・存在しない値のときは何も削除しないテスト
 	 */
 	public function test_delete_user_contents_invalid_user() {
 		$other_id = $this->create_user( 'creator' );
 		$others   = $this->create_contents( $other_id );
+		// 負の ID が絶対値（ユーザー 1）に化けて、ユーザー 1 の投稿が消えないことも確認する。
+		$first_user_contents = $this->create_contents( 1 );
 
-		foreach ( array( 0, '0', 99999999 ) as $invalid_user_id ) {
+		foreach ( array( 0, '0', -1, '-1', 99999999 ) as $invalid_user_id ) {
 			$this->assertSame( 0, VK_Showcase_Withdraw::delete_user_contents( $invalid_user_id ), 'ID ' . $invalid_user_id . ' は何も削除しない' );
 		}
 		foreach ( $others['posts'] as $post_id ) {
 			$this->assertNotNull( get_post( $post_id ), '他人の投稿が残る' );
 		}
 		$this->assertNotNull( get_post( $others['attachment'] ), '他人の添付が残る' );
+		foreach ( $first_user_contents['posts'] as $post_id ) {
+			$this->assertNotNull( get_post( $post_id ), 'ユーザー 1 の投稿が残る' );
+		}
+		$this->assertNotNull( get_post( $first_user_contents['attachment'] ), 'ユーザー 1 の添付が残る' );
 		$this->assertFalse( VK_Showcase_Withdraw::withdraw( 99999999 ), '存在しないユーザーの退会は false' );
 	}
 
