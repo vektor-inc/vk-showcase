@@ -37,7 +37,9 @@ class VK_Showcase_Withdraw {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( __CLASS__, 'add_withdraw_page' ) );
-		add_action( 'admin_footer-profile.php', array( __CLASS__, 'render_profile_entry' ) );
+		add_action( 'show_user_profile', array( __CLASS__, 'render_profile_entry' ) );
+		add_filter( 'parent_file', array( __CLASS__, 'highlight_profile_menu' ) );
+		add_filter( 'submenu_file', array( __CLASS__, 'highlight_profile_menu' ) );
 		add_action( 'admin_post_vksc_withdraw', array( __CLASS__, 'handle_withdraw_request' ) );
 		add_filter( 'login_message', array( __CLASS__, 'add_login_message' ) );
 	}
@@ -72,6 +74,20 @@ class VK_Showcase_Withdraw {
 	}
 
 	/**
+	 * 退会手続きページを開いている間、左メニューの「プロフィール」を強調表示する
+	 *
+	 * @param string|null $file 既定の強調対象（parent_file / submenu_file フィルターの値）.
+	 * @return string|null 退会手続きページなら 'profile.php'、それ以外は受け取った値のまま.
+	 */
+	public static function highlight_profile_menu( $file ) {
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( self::PAGE_SLUG === $page ) {
+			return 'profile.php';
+		}
+		return $file;
+	}
+
+	/**
 	 * 退会を実行できる本人かどうかを判定する
 	 *
 	 * @param int $user_id 対象ユーザー ID.
@@ -89,7 +105,10 @@ class VK_Showcase_Withdraw {
 	}
 
 	/**
-	 * プロフィール画面の最下部に退会への入口を出力する
+	 * プロフィール画面に退会への入口を出力する
+	 *
+	 * プロフィール更新フォームの中（更新ボタンの上）に出力する。入口はリンクだけで送信には影響しない。
+	 * JavaScript が有効なら、フォームの外のページ最下部へ移す。
 	 */
 	public static function render_profile_entry() {
 		if ( ! self::can_withdraw( get_current_user_id() ) ) {
@@ -110,7 +129,7 @@ class VK_Showcase_Withdraw {
 		</style>
 		<script>
 		( function () {
-			// プロフィール更新フォームの外、ページ本体の最下部へ移す。
+			// JavaScript が有効なら、プロフィール更新フォームの外、ページ本体の最下部へ移す。
 			var entry = document.getElementById( 'vksc-withdraw-entry' );
 			var wrap = document.querySelector( '#wpbody-content .wrap' );
 			if ( entry && wrap ) {
@@ -181,6 +200,10 @@ class VK_Showcase_Withdraw {
 				</p>
 			</form>
 			<style>
+				#vksc-withdraw-notice:focus {
+					outline: 2px solid #2271b1;
+					outline-offset: 2px;
+				}
 				.vksc-withdraw-actions {
 					display: flex;
 					flex-wrap: wrap;
@@ -204,9 +227,14 @@ class VK_Showcase_Withdraw {
 			<script>
 			( function () {
 				// エラー通知があれば読み込み時にフォーカスを移す。
+				// WordPress 標準の管理画面スクリプトが通知を DOM 内で移動してフォーカスが外れるため、load 後に移す。
 				var notice = document.getElementById( 'vksc-withdraw-notice' );
 				if ( notice ) {
-					notice.focus();
+					window.addEventListener( 'load', function () {
+						window.setTimeout( function () {
+							notice.focus();
+						}, 0 );
+					} );
 				}
 				// 送信後はボタンを無効化して二重送信を防ぐ（送信処理は止めない）。
 				var form = document.getElementById( 'vksc-withdraw-form' );

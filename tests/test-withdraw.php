@@ -383,4 +383,86 @@ class WithdrawTest extends WP_UnitTestCase {
 		$this->assertSame( $email, $mailer->mock_sent[1]['to'][0][0], '2 通目は本人宛て' );
 		reset_phpmailer_instance();
 	}
+
+	/**
+	 * 左メニューが無い画面で警告を出さず、ある画面では制作者のメニューからコメント・ツールを消すテスト
+	 */
+	public function test_remove_menu_link() {
+		global $menu;
+		$original_menu = $menu;
+
+		$test_cases = array(
+			array(
+				'test_condition_name' => '制作者で左メニューが無い（admin-post.php 相当）場合 => 警告なしで何もしない',
+				'role'                => 'creator',
+				'menu'                => null,
+				'expected'            => null,
+			),
+			array(
+				'test_condition_name' => '制作者で左メニューがある場合 => コメントとツールが消える',
+				'role'                => 'creator',
+				'menu'                => array(
+					2  => array( 'Dashboard', 'read', 'index.php' ),
+					25 => array( 'Comments', 'read', 'edit-comments.php' ),
+					75 => array( 'Tools', 'read', 'tools.php' ),
+				),
+				'expected'            => array(
+					2 => array( 'Dashboard', 'read', 'index.php' ),
+				),
+			),
+			array(
+				'test_condition_name' => '管理者で左メニューがある場合 => 何も消えない',
+				'role'                => 'administrator',
+				'menu'                => array(
+					2  => array( 'Dashboard', 'read', 'index.php' ),
+					25 => array( 'Comments', 'read', 'edit-comments.php' ),
+				),
+				'expected'            => array(
+					2  => array( 'Dashboard', 'read', 'index.php' ),
+					25 => array( 'Comments', 'read', 'edit-comments.php' ),
+				),
+			),
+		);
+
+		foreach ( $test_cases as $case ) {
+			wp_set_current_user( $this->create_user( $case['role'] ) );
+			$menu = $case['menu'];
+			VK_Showcase_Users::remove_menu_link();
+			$this->assertSame( $case['expected'], $menu, $case['test_condition_name'] );
+		}
+
+		$menu = $original_menu;
+	}
+
+	/**
+	 * 退会手続きページでだけ「プロフィール」を強調表示するテスト
+	 */
+	public function test_highlight_profile_menu() {
+		$test_cases = array(
+			array(
+				'test_condition_name' => '退会手続きページ => profile.php',
+				'page'                => VK_Showcase_Withdraw::PAGE_SLUG,
+				'expected'            => 'profile.php',
+			),
+			array(
+				'test_condition_name' => '別のページ => 受け取った値のまま',
+				'page'                => 'other-page',
+				'expected'            => 'options.php',
+			),
+			array(
+				'test_condition_name' => 'page 指定なし => 受け取った値のまま',
+				'page'                => null,
+				'expected'            => 'options.php',
+			),
+		);
+
+		foreach ( $test_cases as $case ) {
+			unset( $_GET['page'] );
+			if ( null !== $case['page'] ) {
+				$_GET['page'] = $case['page'];
+			}
+			$this->assertSame( $case['expected'], VK_Showcase_Withdraw::highlight_profile_menu( 'options.php' ), $case['test_condition_name'] );
+		}
+		unset( $_GET['page'] );
+	}
 }
