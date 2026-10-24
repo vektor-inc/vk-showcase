@@ -47,6 +47,11 @@ class VK_Showcase_Users {
 	 * Remove Menu Link
 	 */
 	public static function remove_menu_link() {
+		global $menu;
+		// admin-post.php など、左メニューが用意されない画面では何もしない。
+		if ( ! is_array( $menu ) ) {
+			return;
+		}
 		if ( current_user_can( 'creator' ) ) {
 			remove_menu_page( 'edit-comments.php' );
 			remove_menu_page( 'tools.php' );

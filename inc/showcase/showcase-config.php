@@ -24,3 +24,7 @@ if ( ! class_exists( 'VK_Showcase_Contact_Form' ) ) {
 if ( ! class_exists( 'VK_Showcase_Author_Archive' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'package/class-vk-showcase-author-archive.php';
 }
+
+if ( ! class_exists( 'VK_Showcase_Withdraw' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'package/class-vk-showcase-withdraw.php';
+}
